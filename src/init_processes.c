@@ -20,6 +20,8 @@ int init_processes(corewar_t *cw)
         cw->processes[i].registers[0] = cw->champs[i].number;
         cw->processes[i].carry = 0;
         cw->processes[i].champ_index = i;
+        cw->processes[i].cycles_left = 0;
+        cw->processes[i].last_live = 0;
     }
     return 0;
 }

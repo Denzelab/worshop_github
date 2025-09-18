@@ -20,6 +20,7 @@ int main(int argc, char **argv)
         return 84;
     if (cw.champ_count == 0)
         return 84;
+    assign_numbers_and_addresses(&cw);
     init_arena(&cw);
     if (load_champions(&cw) == 84)
         return 84;

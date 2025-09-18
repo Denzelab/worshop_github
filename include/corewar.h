@@ -19,32 +19,58 @@
 
     #define MAX_CHAMPS 4
 
-typedef struct champion_s {
-    int number;
+typedef struct {
     char *filename;
-    int load_address;
     header_t header;
     unsigned char *code;
+    int number;
+    int load_address;
 } champion_t;
 
-typedef struct corewar_s {
-    champion_t champs[MAX_CHAMPS];
-    int champ_count;
-    unsigned char arena[MEM_SIZE];
-    int dump_cycle;
-    struct process_s *processes;
-    int process_count;
-} corewar_t;
-
-typedef struct process_s {
+typedef struct {
     int pc;
     int registers[REG_NUMBER];
     int carry;
     int champ_index;
+    int cycles_left;
+    int last_live;
 } process_t;
 
+typedef struct {
+    unsigned char arena[MEM_SIZE];
+    champion_t champs[MAX_CHAMPS];
+    process_t *processes;
+    int champ_count;
+    int process_count;
+    int dump_cycle;
+    int cycle;
+    int cycle_to_die;
+    int nbr_live;
+    int last_alive;
+} corewar_t;
+
+void exec_live(corewar_t *cw, process_t *proc);
+void exec_ld(corewar_t *cw, process_t *proc);
+void exec_st(corewar_t *cw, process_t *proc);
+void exec_add(corewar_t *cw, process_t *proc);
+void exec_sub(corewar_t *cw, process_t *proc);
+void exec_and(corewar_t *cw, process_t *proc);
+void exec_or(corewar_t *cw, process_t *proc);
+void exec_xor(corewar_t *cw, process_t *proc);
+void exec_zjmp(corewar_t *cw, process_t *proc);
+void exec_ldi(corewar_t *cw, process_t *proc);
+void exec_sti(corewar_t *cw, process_t *proc);
+void exec_fork(corewar_t *cw, process_t *proc);
+void exec_lld(corewar_t *cw, process_t *proc);
+void exec_lldi(corewar_t *cw, process_t *proc);
+void exec_lfork(corewar_t *cw, process_t *proc);
+void exec_aff(corewar_t *cw, process_t *proc);
+int place_champion_in_arena(corewar_t *cw, champion_t *champ);
+void assign_numbers_and_addresses(corewar_t *cw);
+int get_param_value(corewar_t *cw, process_t *proc, int param_pos);
+int is_register_param(unsigned char coding_byte, int param_pos);
+int get_param_size(unsigned char coding_byte, int param_pos);
 int init_processes(corewar_t *cw);
-int corewar_run(corewar_t *cw);
 int parse_args(int ac, char **av, corewar_t *cw);
 int set_dump_cycle(corewar_t *cw, char **av, int *i, int ac);
 int parse_champion_opts(corewar_t *cw, char **av, int *i, int ac);

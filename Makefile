@@ -13,7 +13,26 @@ SRC		=	src/main.c	\
 			src/utils/my_strlen.c	\
 			src/utils/my_getnbr.c	\
 			src/utils/my_strdup.c	\
+			src/utils/param.c	\
+			src/instructions/add.c	\
+			src/instructions/aff.c	\
+			src/instructions/and.c	\
+			src/instructions/fork.c	\
+			src/instructions/ld.c	\
+			src/instructions/ldi.c	\
+			src/instructions/live.c	\
+			src/instructions/lld.c	\
+			src/instructions/lldi.c	\
+			src/instructions/or.c	\
+			src/instructions/st.c	\
+			src/instructions/sti.c	\
+			src/instructions/sub.c	\
+			src/instructions/xor.c	\
+			src/instructions/zjmp.c	\
+			src/instructions/lfork.c	\
+			src/place_champion_in_arena.c	\
 			src/champions.c	\
+			src/op.c	\
 			src/arena.c	\
 			src/loader.c	\
 			src/vm.c	\

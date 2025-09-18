@@ -7,7 +7,7 @@
 
 #include "../include/corewar.h"
 
-int place_champion(corewar_t *cw, champion_t *champ)
+int place_champion_in_arena(corewar_t *cw, champion_t *champ)
 {
     int start = champ->load_address;
     

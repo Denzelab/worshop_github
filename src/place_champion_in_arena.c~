@@ -1,12 +1,3 @@
-/*
-** EPITECH PROJECT, 2025
-** corewar
-** File description:
-** corewar
-*/
-
-#include "../include/corewar.h"
-
 void assign_numbers_and_addresses(corewar_t *cw)
 {
     int next_number = 1;
@@ -20,4 +11,13 @@ void assign_numbers_and_addresses(corewar_t *cw)
             cw->champs[i].load_address = (MEM_SIZE / cw->champ_count) * i;
         }
     }
+}
+
+int place_champion_in_arena(corewar_t *cw, champion_t *champ)
+{
+    int start = champ->load_address;
+
+    for (int i = 0; i < champ->header.prog_size; i++)
+        cw->arena[(start + i) % MEM_SIZE] = champ->code[i];
+    return 0;
 }
