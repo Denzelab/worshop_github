@@ -7,25 +7,21 @@
 
 #include "../../include/corewar.h"
 
-int my_getnbr(char const *c)
+int my_getnbr(char const *str)
 {
+    int result = 0;
+    int sign = 1;
     int i = 0;
-    int j = 0;
-    int a = 1;
-    int res = 0;
-    int r;
 
-    while (c[i] != '\0') {
-        if (c[i] == '-')
-            a = -a;
+    if (str[0] == '-') {
+        sign = -1;
+        i++;
+    } else if (str[0] == '+') {
         i++;
     }
-    while (c[j] != '\0') {
-        if (c[j] >= 48 && c[j] <= 57)
-            r = c[j] - 48;
-        res = res * 10 + r;
-        j++;
+    while (str[i] >= '0' && str[i] <= '9') {
+        result = result * 10 + (str[i] - '0');
+        i++;
     }
-    res = a * res;
-    return res;
+    return result * sign;
 }

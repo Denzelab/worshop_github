@@ -9,13 +9,14 @@
 
 static int add_new_process(corewar_t *cw, process_t *parent, int new_pc)
 {
+    process_t parent_copy = *parent;
     process_t *new_processes = realloc(cw->processes,
         sizeof(process_t) * (cw->process_count + 1));
-
+        
     if (!new_processes)
         return 84;
     cw->processes = new_processes;
-    cw->processes[cw->process_count] = *parent;
+    cw->processes[cw->process_count] = parent_copy;
     cw->processes[cw->process_count].pc = new_pc;
     cw->processes[cw->process_count].cycles_left = 0;
     cw->process_count++;

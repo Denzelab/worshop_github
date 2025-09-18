@@ -10,10 +10,10 @@
 
 static void print_line(unsigned char *arena, int start)
 {
-    mini_printf("%04x :", start);
+    printf("%04x :", start);
     for (int i = 0; i < 32; i++)
-        mini_printf(" %02x", arena[start + i]);
-    mini_printf("\n");
+        printf(" %02x", arena[start + i]);
+    printf("\n");
 }
 
 void dump_arena(unsigned char *arena)

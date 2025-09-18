@@ -33,25 +33,17 @@ static void execute_instruction(corewar_t *cw, process_t *proc)
         case 0x0e: exec_lldi(cw, proc); break;
         case 0x0f: exec_lfork(cw, proc); break;
         case 0x10: exec_aff(cw, proc); break;
-        default: proc->pc = (proc->pc + 1) % MEM_SIZE; break;
+        default: 
+            proc->pc = (proc->pc + 1) % MEM_SIZE;
+            break;
     }
 }
 
 static void vm_cycle(corewar_t *cw)
 {
-    for (int i = 0; i < cw->process_count; i++)
-        execute_instruction(cw, &cw->processes[i]);
-}
-
-static int check_alive_processes(corewar_t *cw)
-{
-    int alive = 0;
-
     for (int i = 0; i < cw->process_count; i++) {
-        if (cw->cycle - cw->processes[i].last_live < cw->cycle_to_die)
-            alive++;
+        execute_instruction(cw, &cw->processes[i]);
     }
-    return alive;
 }
 
 static void remove_dead_processes(corewar_t *cw)
@@ -59,8 +51,10 @@ static void remove_dead_processes(corewar_t *cw)
     int new_count = 0;
 
     for (int i = 0; i < cw->process_count; i++) {
-        if (cw->cycle - cw->processes[i].last_live < cw->cycle_to_die) {
-            cw->processes[new_count] = cw->processes[i];
+        if (cw->cycle - cw->processes[i].last_live <= cw->cycle_to_die) {
+            if (new_count != i) {
+                cw->processes[new_count] = cw->processes[i];
+            }
             new_count++;
         }
     }
@@ -71,6 +65,7 @@ int run_vm(corewar_t *cw)
 {
     cw->cycle_to_die = CYCLE_TO_DIE;
     cw->cycle = 0;
+    cw->nbr_live = 0;
 
     while (cw->process_count > 0) {
         cw->cycle++;
@@ -80,15 +75,22 @@ int run_vm(corewar_t *cw)
             return 0;
         }
         if (cw->cycle % cw->cycle_to_die == 0) {
+            remove_dead_processes(cw);
             if (cw->nbr_live >= NBR_LIVE) {
                 cw->cycle_to_die -= CYCLE_DELTA;
-                cw->nbr_live = 0;
+                if (cw->cycle_to_die <= 0)
+                    cw->cycle_to_die = 1;
             }
-            remove_dead_processes(cw);
+            cw->nbr_live = 0;
+        }
+        if (cw->cycle > 1000000) {
+            break;
         }
     }
-    mini_printf("The player %d(%s) has won.\n",
-        cw->champs[cw->last_alive].number,
-        cw->champs[cw->last_alive].header.prog_name);
+        if (cw->last_alive >= 0 && cw->last_alive < cw->champ_count) {
+        mini_printf("The player %d(%s) has won.\n",
+            cw->champs[cw->last_alive].number,
+            cw->champs[cw->last_alive].header.prog_name);
+    }
     return 0;
 }

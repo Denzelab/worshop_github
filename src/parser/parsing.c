@@ -41,28 +41,24 @@ int parse_champion_opts(corewar_t *cw, char **av, int *i, int ac)
     int number = 0;
     int address = -1;
 
-    while (*i < ac && (my_strcmp(av[*i], "-n") == 0
-        || my_strcmp(av[*i], "-a") == 0)) {
+    while (*i < ac && (my_strcmp(av[*i], "-n") == 0 || my_strcmp(av[*i], "-a") == 0)) {
         if (my_strcmp(av[*i], "-n") == 0) {
             if (*i + 1 >= ac || !valid_number(av[*i + 1]))
                 return 84;
-            number = my_getnbr(av[(*i)]);
             (*i)++;
-        } else if (my_strcmp(av[*i], "-dump") == 0) {
-            if (parse_dump(i, ac, av, cw) == 84)
-                return 84;
-            continue;
+            number = my_getnbr(av[*i]);
         } else if (my_strcmp(av[*i], "-a") == 0) {
             if (*i + 1 >= ac || !valid_number(av[*i + 1]))
                 return 84;
-            address = my_getnbr(av[(*i)]);
             (*i)++;
+            address = my_getnbr(av[*i]);
         }
         (*i)++;
     }
     if (*i >= ac)
         return 84;
-    return add_champion_with_opts(cw, av[*i], number, address);
+    add_champion_with_opts(cw, av[*i], number, address);
+    return 0;
 }
 
 int set_dump_cycle(corewar_t *cw, char **av, int *i, int ac)
