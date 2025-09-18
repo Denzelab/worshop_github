@@ -1,0 +1,14 @@
+/*
+** EPITECH PROJECT, 2025
+** corewar
+** File description:
+** corewar
+*/
+
+#include "../include/corewar.h"
+
+void init_arena(corewar_t *cw)
+{
+    for (int i = 0; i < MEM_SIZE; i++)
+        cw->arena[i] = 0;
+}
